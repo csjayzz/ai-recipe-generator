@@ -54,3 +54,59 @@ data: { preferences }
 next(error);
 }
 };
+
+/*
+* Change password
+*/
+export const changePassword = async (req, res, next) => {
+try {
+const { currentPassword, newPassword } = req.body;
+
+if (!currentPassword || !newPassword) {
+return res.status(400).json({
+success: false,
+message: 'Please provide current and new password'
+});
+}
+
+// Verify current password
+const user = await User.findByEmail(req.user.email);
+
+const isValid = await User.verifyPassword(currentPassword, user.password_hash);
+
+if (!isValid) {
+return res.status(401).json({
+success: false,
+message: 'Current password is incorrect'
+});
+
+}
+
+// Update to new password
+await User.updatePassword(req.user.id, newPassword);
+
+res.json({
+success: true,message: 'Password changed successfully'
+});
+} catch (error) {
+next(error);
+}
+};
+
+/*
+ * Delete user account
+ in production you would typically want to implement a soft delete or at least require password confirmation before deleting an account to prevent accidental deletions but for simplicity we will just delete the user record here.
+ */
+export const deleteAccount = async (req, res, next) => {
+  try {
+    await User.delete(req.user.id);
+    res.json({
+      success: true,
+      message: 'Account deleted successfully'
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+
