@@ -76,7 +76,7 @@ class User {
 * Update password
 */
 static async updatePassword(id, newPassword) {
-const hashed_Password = await bcrypt.hash(newPassword, 10);
+const hashedPassword = await bcrypt.hash(newPassword, 10);
 await db.query(
 'UPDATE users SET password_hash = $1 WHERE id = $2',
 [hashedPassword, id]
@@ -86,10 +86,17 @@ await db.query(
 * Verify password
 */
 static async verifyPassword (plainPassword, hashedPassword) {
-return await bcrypt.compare (plainPassword, hashed_Password);
+return await bcrypt.compare (plainPassword, hashedPassword);
 
+}
+
+/**
+ * Delete user 
+ */
+static async delete(id){
+    await db.query('DELETE FROM users WHERE id = $1',[id]);
 }
 
 }
 
-
+export default User;
