@@ -1,5 +1,5 @@
-import User from "../models/user";
-import UserPreference from "../models/UserPreference";
+import User from "../models/user.js";
+import UserPreference from "../models/UserPreference.js";
 
 //using user mofel to handle account data and userpref for haandling user preferences
 
