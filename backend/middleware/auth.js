@@ -1,11 +1,12 @@
 import jwt from "jsonwebtoken";
-import dotenv from "dotenv";
-dotenv.config();
+
 
 const authMiddleware = async (req, res, next) => {
   try {
     // Get token from header
-    const token = req.header("Authorization")?.replace("Bearer", "");
+   const authHeader = req.header("Authorization");
+   const token = authHeader?.split(" ")[1];
+
 
     if (!token) {
       return res.status(401).json({
