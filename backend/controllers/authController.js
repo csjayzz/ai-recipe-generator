@@ -1,6 +1,6 @@
-import User from "../models/user";
+import User from "../models/user.js";
 import jwt from "jsonwebtoken";
-import UserPreference from "../models/UserPreference";
+import UserPreference from "../models/UserPreference.js";
 
 /**
  * Generate JWT token for a user
@@ -46,7 +46,7 @@ export const register = async (req, res, next) => {
 
     //create default preferences for the new user
     await UserPreference.upsert(user.id, {
-      dietay_restrictions: [],
+      dietary_restrictions: [],
       allergies: [],
       preferred_cuisines: [],
       default_servings: 4,
