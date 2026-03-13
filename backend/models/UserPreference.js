@@ -1,5 +1,5 @@
 //this model will handle each user's preferences for recipe generation, such as dietary restrictions, preferred cuisines, and ingredient exclusions.
-import db from '../db/index.js';
+import db from '../config/db.js';
 
 class UserPreference {
 /**
