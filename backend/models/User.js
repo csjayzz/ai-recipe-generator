@@ -1,5 +1,5 @@
 import db from '../config/db.js';
-import bcrypt from 'bcryptjs';
+import bcrypt from 'bcrypt';
 
 class User {
     /*
@@ -10,13 +10,13 @@ class User {
     A parameterized query (also known as a prepared statement) is an SQL statement that uses placeholders for data values, which are then supplied at execution time. This method is the most effective way to prevent SQL injection attacks because it ensures that the database treats user input strictly as data, not as executable code
      */
    static async create({email,password,name}){
-    const hashedPasssword = await bcrypt.hash(password,10);
+    const hashedPassword = await bcrypt.hash(password,10);
 
     const result = await db.query(
-        `INSERT INTO  USER (email,password_hash,name)
-        Values ($1, $2, $3)
+        `INSERT INTO users (email, password_hash, name)
+        VALUES ($1, $2, $3)
         RETURNING id, email, name, created_at `,
-        [email,hashedPasssword,name]
+        [email,hashedPassword,name]
     ) ;
 
     return result.rows[0];
@@ -60,8 +60,8 @@ class User {
     const result = await db.query(
         `
         UPDATE users 
-    SET name = COALSCE($1, name),
-        email = COALSCE($2,email)
+    SET name = COALESCE($1, name),
+        email = COALESCE($2, email)
         WHERE id = $3
         RETURNING id, email,name,updated_at`,
         [name,email,id]
